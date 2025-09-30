@@ -5,7 +5,7 @@
 #include <sstream>
 
 namespace Hazel {
-	class HAZEL_API KeyEvent : Event
+	class HAZEL_API KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode;  }
@@ -21,6 +21,7 @@ namespace Hazel {
 
 	class HAZEL_API KeyPressedEvent : public KeyEvent
 	{
+	public:
 		KeyPressedEvent(int keycode, int repeatCount)
 			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
 
@@ -41,6 +42,7 @@ namespace Hazel {
 
 	class HAZEL_API KeyReleasedEvent : public KeyEvent
 	{
+	public:
 		KeyReleasedEvent(int keycode)
 			: KeyEvent(keycode){}
 
