@@ -5,6 +5,8 @@
 #include "Hazel/Core.h"
 #include "Hazel/Events/Event.h"
 
+#include <GLFW/glfw3.h>
+
 namespace Hazel {
 	struct WindowProps
 	{
@@ -36,5 +38,7 @@ namespace Hazel {
 		virtual bool IsVSync() const = 0;
 
 		static Window* Create(const WindowProps& props = WindowProps());
+
+		virtual void* GetNativeWindow() const = 0;
 	};
 }

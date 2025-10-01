@@ -13,8 +13,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 --Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
+IncludeDir["Glad"] = "Hazel/vendor/Glad/include"
+IncludeDir["ImGui"] = "Hazel/vendor/imgui"
 
 include "Hazel/vendor/GLFW"
+include "Hazel/vendor/Glad"
+include "Hazel/vendor/imgui"
 
 project "Hazel"
 	location "Hazel"
@@ -37,25 +41,30 @@ project "Hazel"
 	{
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src", 
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 	
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 		buildoptions{"/utf-8"}
 
 		defines
 		{
 			"HZ_PLATFORM_WINDOWS",
-			"HZ_BUILD_DLL"
+			"HZ_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 	postbuildcommands
@@ -65,17 +74,17 @@ project "Hazel"
 
 		filter "configurations:Debug"
 			defines "HZ_DEBUG"
-			buildoptions "/MDd"
+			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "HZ_Release"
-			buildoptions "/MD"
+			runtime "Release"
 			symbols "On"
 	
 		filter "configurations:Dist"
 			defines "HZ_DIST"
-			buildoptions "/MD"
+			runtime "Release"
 			symbols "On"
 
 project "Sandbox"
@@ -95,7 +104,9 @@ project "Sandbox"
 	includedirs
 	{
 		"Hazel/vendor/spdlog/include;",
-		"Hazel/src"
+		"Hazel/src",
+		"%{IncludeDir.GLFW}", 
+        "%{IncludeDir.Glad}" 
 	}
 	
 	links
@@ -105,7 +116,7 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 		buildoptions{"/utf-8"}
 
@@ -116,15 +127,15 @@ project "Sandbox"
 
 		filter "configurations:Debug"
 			defines "HZ_DEBUG"
-			buildoptions "/MDd"
+			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "HZ_Release"
-			buildoptions "/MD"
+			runtime "Release"
 			symbols "On"
 	
 		filter "configurations:Dist"
 			defines "HZ_DIST"
-			buildoptions "/MD"
+			runtime "Release"
 			symbols "On"
