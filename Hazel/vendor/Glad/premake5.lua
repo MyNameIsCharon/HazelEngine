@@ -1,7 +1,7 @@
 project "Glad"
 	kind "StaticLib"
 	language "C"
-	staticruntime "Off"
+	staticruntime "on"
 	warnings "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -30,6 +30,3 @@ project "Glad"
         runtime "Release"
         optimize "On"
     
-    filter "configurations:Dist"
-        runtime "Release"
-        optimize "On"
